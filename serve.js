@@ -4,6 +4,8 @@ const path = require('path');
 
 const routes = require('./routes/routes');
 
+const conectionMongoDB = require("./database/connection");
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, 'public')));
@@ -13,7 +15,9 @@ app.set('view engine', 'ejs');
 
 app.use(routes);
 
-app.listen(3000, () => {
+conectionMongoDB.then(result => {
+    app.listen(3000, () => {
     console.log('\nAcessar http://localhost:3000');
     console.log('Servidor executando na porta 3000\n');
-});
+    });
+}).catch(errors => console.log(errors))
